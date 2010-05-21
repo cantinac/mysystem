@@ -1,8 +1,9 @@
+gem "selenium-client"
 require 'selenium/rake/tasks'
 require 'spec/rake/spectask'
 
 Selenium::Rake::RemoteControlStartTask.new("start_selenium") do |rc| 
-  puts "jar path = #{@jar_path}"
+  #puts "jar path = #{@jar_path}"
   rc.port = 4444
   rc.timeout_in_seconds = 3 * 60
   rc.background = true
@@ -19,7 +20,7 @@ end
 
 desc "Run all examples"
 Spec::Rake::SpecTask.new('test') do |t|
-  t.spec_files = FileList['tests/*.spec.rb']
+  t.spec_files = FileList['spec/*.spec.rb']
   t.spec_opts << '--color'
   t.spec_opts << "--require 'rubygems,selenium/rspec/reporting/selenium_test_report_formatter'"
   t.spec_opts << "--format=Selenium::RSpec::SeleniumTestReportFormatter:#{@report_file}"
