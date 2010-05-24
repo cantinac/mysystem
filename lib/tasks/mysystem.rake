@@ -58,7 +58,7 @@ end
 }
 
 @report_file ="#{File.dirname(__FILE__)}/tmp/report.html"
-@jar_path = "#{File.dirname(__FILE__)}/bin/selenium.jar"
+@jar_path = "#{File.dirname(__FILE__)}/../../bin/selenium.jar"
 def simple_sprocket(list,filename)
   secretary = Sprockets::Secretary.new(
     :source_files => list

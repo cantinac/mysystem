@@ -3,7 +3,7 @@ require 'selenium/rake/tasks'
 require 'spec/rake/spectask'
 
 Selenium::Rake::RemoteControlStartTask.new("start_selenium") do |rc| 
-  #puts "jar path = #{@jar_path}"
+  puts "jar path = #{@jar_path}"
   rc.port = 4444
   rc.timeout_in_seconds = 3 * 60
   rc.background = true

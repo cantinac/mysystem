@@ -12,13 +12,14 @@ describe "MySystem" do
     @this_dir = File.dirname(__FILE__)
     @test_dir = File.expand_path("#{@this_dir}/../test/")
     @base_dir = File.expand_path("#{@this_dir}/../")
-    @base_url = "file://#{@base_dir}"
+    @page_screenshot_dir = "#{@this_dir}/tmp/screenshots/#{Time.now.to_i}"
+    @base_url = "http://localhost/mysystem/mysystem/src/" #@base_url = "file://#{@base_dir}"
     @verification_errors = []
     @selenium_driver = Selenium::Client::Driver.new \
       :host => "localhost",
       :port => 4444,
       :browser => "*firefox",
-      :url => "file://#{@base_dir}",
+      :url => @base_url, #"file://#{@base_dir}",
       :timeout_in_second => 60
   end
 
@@ -34,18 +35,23 @@ describe "MySystem" do
   
 
   it "should not let me navigate backwards using the backspace or delete key" do
-    pending "This test works fine in the browser when run by hand ..."
+    #pending "This test works fine in the browser when run by hand ..."
     page.open "#{@base_url}/blank.html"
     page.click "link=click here"
     page.wait_for_page_to_load "30000"
     page.click "id=center"
+    
+    #delete
     page.key_press "id=center", "\\127"
+    page.get_title.should == "MySystem-dev"
+    
+    #backspace
     page.key_press "id=center", "\\8"
-    page.get_title.should == "MySystem"
+    page.get_title.should == "MySystem-dev"
   end
   
   it "should let me type backspaces into form fields" do
-    pending "This test works fine in the browser when run by hand ..."
+    #pending "This test works fine in the browser when run by hand ..."
     page.open "#{@base_url}/mysystem-dev.html" 
     page.drag_and_drop "//div[@id='left']/div[1]/img[1]", "+300,+0"
     page.mouse_down_at "//*[@id=\"center\"]/div/div[1]/div[1]", "30,15"
@@ -54,5 +60,25 @@ describe "MySystem" do
     page.get_value("name").should == "namex"
     page.key_press "id=name", "\\8"
     page.get_value("name").should == "name"
+  end
+  
+  it "should look correct to a human when rendering a pre-defined diagram with Raphael in EDIT mode" do
+    page.open "#{@base_url}/mysystem-dev.html"
+    
+    image_path = "#{@page_screenshot_dir}/raphael_edit_mode.png"
+    encoded_image = page.capture_entire_page_screenshot_to_string("")
+    png_image = Base64.decode64(encoded_image)
+    FileUtils.mkdir_p(@page_screenshot_dir)
+    File.open(image_path, "wb") { |f| f.write png_image }
+  end
+  
+  it "should look correct to a human when rendering a pre-defined diagram with Raphael in PRINT mode" do
+    page.open "#{@base_url}/print.html"
+    
+    image_path = "#{@page_screenshot_dir}/raphael_print_mode.png"
+    encoded_image = page.capture_entire_page_screenshot_to_string("")
+    png_image = Base64.decode64(encoded_image)
+    FileUtils.mkdir_p(@page_screenshot_dir)
+    File.open(image_path, "wb") { |f| f.write png_image }
   end
 end
