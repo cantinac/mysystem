@@ -63,28 +63,80 @@ describe "MySystem" do
   end
   
   it "should look correct to a human when rendering a pre-defined diagram with Raphael in EDIT mode" do
+    # Open the page and wait for five seconds, to ensure all our JS libraries have time to get started
     page.open "#{@base_url}/src/mysystem-dev.html"
     page.set_speed 5000
     
-    image_path = "#{@page_screenshot_dir}/raphael_edit_mode.png"
+    # Paths to output files
+    html_path = "#{@page_screenshot_dir}/raphael_edit_mode.html"
+    image_path = "#{@page_screenshot_dir}/gfx/raphael_edit_mode.png"
+    
+    # Produce the raw data for our screenshot
     encoded_image = page.capture_entire_page_screenshot_to_string("")
     png_image = Base64.decode64(encoded_image)
-    FileUtils.mkdir_p(@page_screenshot_dir)
+    
+    # Write our image file to disk. We don't want to create the directories until now, so we don't
+    # wind up with empty directories in case of an image capture failure
+    FileUtils.mkdir_p(File.dirname(image_path))
     File.open(image_path, "wb") { |f| f.write png_image }
     
+    # Write our little HTML wrapper page
+    caption = "test caption"
+    html = <<EOT
+<html>
+  <head>
+    <title>MySystem Edit Mode Acceptance Test :: #{caption}</title>
+  </head>
+  <body>
+    <center>
+      <img src="gfx/raphael_edit_mode.png" />
+      <p>#{caption}</p>
+    </center>
+  </body>
+</html>
+EOT
+    File.open(html_path, "w") { |f| f.write html }
+    
+    # Set Selenium command speed back to default
     page.set_speed 0
   end
   
   it "should look correct to a human when rendering a pre-defined diagram with Raphael in PRINT mode" do
+    # Open the page and wait for five seconds, to ensure all our JS libraries have time to get started
     page.open "#{@base_url}/src/print.html"
     page.set_speed 5000
     
-    image_path = "#{@page_screenshot_dir}/raphael_print_mode.png"
+    # Paths to output files
+    html_path = "#{@page_screenshot_dir}/raphael_print_mode.html"
+    image_path = "#{@page_screenshot_dir}/gfx/raphael_print_mode.png"
+    
+    # Produce the raw data for our screenshot
     encoded_image = page.capture_entire_page_screenshot_to_string("")
     png_image = Base64.decode64(encoded_image)
-    FileUtils.mkdir_p(@page_screenshot_dir)
+    
+    # Write our image file to disk. We don't want to create the directories until now, so we don't
+    # wind up with empty directories in case of an image capture failure
+    FileUtils.mkdir_p(File.dirname(image_path))
     File.open(image_path, "wb") { |f| f.write png_image }
     
+    # Write our little HTML wrapper page
+    caption = "test caption"
+    html = <<EOT
+<html>
+  <head>
+    <title>MySystem Print Mode Acceptance Test :: #{caption}</title>
+  </head>
+  <body>
+    <center>
+      <img src="gfx/raphael_print_mode.png" />
+      <p>#{caption}</p>
+    </center>
+  </body>
+</html>
+EOT
+    File.open(html_path, "w") { |f| f.write html }
+    
+    # Set Selenium command speed back to default
     page.set_speed 0
   end
 end
