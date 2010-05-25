@@ -13,7 +13,7 @@ describe "MySystem" do
     @test_dir = File.expand_path("#{@this_dir}/../test/")
     @base_dir = File.expand_path("#{@this_dir}/../")
     @page_screenshot_dir = "#{@this_dir}/tmp/screenshots/#{Time.now.to_i}"
-    @base_url = "http://localhost/mysystem/mysystem/src/" #@base_url = "file://#{@base_dir}"
+    @base_url = "http://localhost/mysystem/mysystem/" #@base_url = "file://#{@base_dir}"
     @verification_errors = []
     @selenium_driver = Selenium::Client::Driver.new \
       :host => "localhost",
@@ -36,7 +36,7 @@ describe "MySystem" do
 
   it "should not let me navigate backwards using the backspace or delete key" do
     #pending "This test works fine in the browser when run by hand ..."
-    page.open "#{@base_url}/blank.html"
+    page.open "#{@base_url}/src/blank.html"
     page.click "link=click here"
     page.wait_for_page_to_load "30000"
     page.click "id=center"
@@ -52,7 +52,7 @@ describe "MySystem" do
   
   it "should let me type backspaces into form fields" do
     #pending "This test works fine in the browser when run by hand ..."
-    page.open "#{@base_url}/mysystem-dev.html" 
+    page.open "#{@base_url}/src/mysystem-dev.html" 
     page.drag_and_drop "//div[@id='left']/div[1]/img[1]", "+300,+0"
     page.mouse_down_at "//*[@id=\"center\"]/div/div[1]/div[1]", "30,15"
     page.mouse_up_at "//*[@id=\"center\"]/div/div[1]/div[1]", "30,15"
@@ -63,22 +63,28 @@ describe "MySystem" do
   end
   
   it "should look correct to a human when rendering a pre-defined diagram with Raphael in EDIT mode" do
-    page.open "#{@base_url}/mysystem-dev.html"
+    page.open "#{@base_url}/src/mysystem-dev.html"
+    page.set_speed 5000
     
     image_path = "#{@page_screenshot_dir}/raphael_edit_mode.png"
     encoded_image = page.capture_entire_page_screenshot_to_string("")
     png_image = Base64.decode64(encoded_image)
     FileUtils.mkdir_p(@page_screenshot_dir)
     File.open(image_path, "wb") { |f| f.write png_image }
+    
+    page.set_speed 0
   end
   
   it "should look correct to a human when rendering a pre-defined diagram with Raphael in PRINT mode" do
-    page.open "#{@base_url}/print.html"
+    page.open "#{@base_url}/src/print.html"
+    page.set_speed 5000
     
     image_path = "#{@page_screenshot_dir}/raphael_print_mode.png"
     encoded_image = page.capture_entire_page_screenshot_to_string("")
     png_image = Base64.decode64(encoded_image)
     FileUtils.mkdir_p(@page_screenshot_dir)
     File.open(image_path, "wb") { |f| f.write png_image }
+    
+    page.set_speed 0
   end
 end
