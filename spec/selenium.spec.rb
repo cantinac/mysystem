@@ -13,7 +13,7 @@ describe "MySystem" do
     @test_dir = File.expand_path("#{@this_dir}/../test/")
     @base_dir = File.expand_path("#{@this_dir}/../")
     @page_screenshot_dir = "#{@this_dir}/tmp/screenshots/#{Time.now.to_i}"
-    @base_url = "http://localhost/mysystem/mysystem/" #@base_url = "file://#{@base_dir}"
+    @base_url = "file://#{@base_dir}" #"http://localhost/mysystem/mysystem/" #@base_url = "file://#{@base_dir}"
     @verification_errors = []
     @selenium_driver = Selenium::Client::Driver.new \
       :host => "localhost",
