@@ -9,3 +9,4 @@ tmp
 appspot/*
 vendor/*
 WEB-INF/*
+instrumented/**
