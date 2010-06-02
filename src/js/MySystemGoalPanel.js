@@ -6,12 +6,7 @@
         this.icon = $('#goal_panel_icon');
         this.contentElem = $('#goal_panel_text');
         
-        this.panel = new YAHOO.widget.Panel(this.elem.attr('id'), {
-            xy: [580, -10],
-            width: '300px',
-            close: false
-        });
-        this.panel.buildWrapper();
+        this.panel = $('#'+this.elem.attr('id'));
 
         this.icon.click(function(event) {
             if (self.collapsed) {
@@ -35,7 +30,13 @@
         },
 
         render: function () {
-            this.panel.render();
+            this.panel.dialog({
+              closeText: '',
+              position: [580, -10],
+              resizable: true
+            });
+            this.elem.siblings('.ui-dialog-titlebar').css({'display': 'none', 'visibility': 'hidden'});
+            this.elem.css({ 'min-height': '0', 'margin-top': '8px' });
         },
 
         collapse: function () {

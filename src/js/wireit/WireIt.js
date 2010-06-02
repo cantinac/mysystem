@@ -19,7 +19,8 @@ var WireIt = {
     * @return {Integer} integer size
     */
    getIntStyle: function(el,style) {
-      var sStyle = YAHOO.util.Dom.getStyle(el, style);
+     var sStyle = $(el).css(style);
+      //var sStyle = YAHOO.util.Dom.getStyle(el, style);
       return parseInt(sStyle.substr(0, sStyle.length-2), 10);
    },
 
@@ -86,7 +87,8 @@ var WireIt = {
     * @param {Array} arr Array to search into
     * @return {Integer} element index or -1 if not found
     */
-   indexOf: YAHOO.lang.isFunction(Array.prototype.indexOf) ? 
+    indexOf: jQuery.isFunction(Array.prototype.indexOf) ? 
+   //indexOf: YAHOO.lang.isFunction(Array.prototype.indexOf) ? 
                         function(el, arr) { return arr.indexOf(el);} : 
                         function(el, arr) {
                            for(var i = 0 ;i < arr.length ; i++) {
@@ -102,7 +104,8 @@ var WireIt = {
     * @param {Array} arr Array to compact
     * @return {Array} compacted array
     */
-   compact: YAHOO.lang.isFunction(Array.prototype.compact) ? 
+    compact: jQuery.isFunction(Array.prototype.compact) ?
+   //compact: YAHOO.lang.isFunction(Array.prototype.compact) ? 
                         function(arr) { return arr.compact();} :          
                         function(arr) {
                            var n = [];

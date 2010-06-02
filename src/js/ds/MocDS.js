@@ -2,7 +2,7 @@
   // A Moc DatService, which does not require a backend at all.
   MocDS = function(one,two){
     this.data = "[]";
-    debug ("new " + this + " created");
+    //debug ("new " + this + " created");
   };
 
   MocDS.prototype = {
@@ -12,7 +12,7 @@
     },
 
     load: function(context,callback) {
-      debug("Moc Loading ... ");
+      //debug("Moc Loading ... ");
       callback(this.data,context);
     
   	},

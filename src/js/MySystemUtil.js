@@ -122,8 +122,8 @@
       for (var key in options) {
         this.options[key] = options[key];
       }
-      debug("loaded defaults for wire-it layer");
-      debug(this.options.parentEl);
+      //debug("loaded defaults for wire-it layer");
+      //debug(this.options.parentEl);
     };
   }
   

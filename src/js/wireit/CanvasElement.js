@@ -1,7 +1,8 @@
 (function () {
    
    // Shortcuts
-   var Event = YAHOO.util.Event, UA = YAHOO.env.ua;
+   //var Event = YAHOO.util.Event;
+   //var UA = YAHOO.env.ua;
 
    /**
     * Create a canvas element and wrap cross-browser hacks to resize it
@@ -25,7 +26,7 @@
       // excanvas.js for dynamic canvas tags
       if(typeof (G_vmlCanvasManager)!="undefined"){
          this.element = G_vmlCanvasManager.initElement(this.element);
-      }
+      } 
       
    };
    
@@ -49,12 +50,14 @@
          var el = this.element;
 
          // Remove from DOM
-         if(YAHOO.util.Dom.inDocument(el)) {
+         //if(YAHOO.util.Dom.inDocument(el)) {
+         if ($(el) && $(el).parent().size()) {
             el.parentNode.removeChild(el);
          }
 
          // recursively purge element
-         Event.purgeElement(el, true);
+         //Event.purgeElement(el, true);
+         $(el).die();
       },
       
       /**
@@ -66,7 +69,7 @@
        * @param {Number} width New width
        * @param {Number} height New height
        */
-      SetCanvasRegion: UA.ie ? 
+      SetCanvasRegion: $.browser.msie ? 
                // IE
                function(left,top,width,height){
                   var el = this.element;
@@ -74,17 +77,20 @@
                   el.getContext("2d").clearRect(0,0,width,height);
                   this.element = el;
                } : 
-               ( (UA.webkit || UA.opera) ? 
+               ( ($.browser.safari || $.browser.opera) ? 
                   // Webkit (Safari & Chrome) and Opera
                   function(left,top,width,height){
                      var el = this.element;
                      var newCanvas=WireIt.cn("canvas",{className:el.className || el.getAttribute("class"),width:width,height:height},{left:left+"px",top:top+"px"});
-                     var listeners=Event.getListeners(el);
+                     //var listeners=Event.getListeners(el);
+                     var listeners = $(el).data('events');
                      for(var listener in listeners){
                         var l=listeners[listener];
-                        Event.addListener(newCanvas,l.type,l.fn,l.obj,l.adjust);
+                        $(newCanvas).bind(l.type, l.fn);
+                        //Event.addListener(newCanvas,l.type,l.fn,l.obj,l.adjust);
                      }
-                     Event.purgeElement(el);
+                     $(el).die();
+                     //Event.purgeElement(el);
                      el.parentNode.replaceChild(newCanvas,el);
                      this.element = newCanvas;
                   } :  

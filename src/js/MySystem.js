@@ -50,7 +50,7 @@ mysystem.MySystem.prototype = {
     },
 
     loadModulesFromJSON: function (jsonString) {
-        debug("Calling loadModulesFromJSON:" + jsonString);
+        //debug("Calling loadModulesFromJSON:" + jsonString);
         var retObj = { modules: [], labels: null, arrows: null, goalText: '' };
         
         try {

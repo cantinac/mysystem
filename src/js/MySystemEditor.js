@@ -21,7 +21,7 @@
         this._dirty = false;
         
         if (mysystem.config.autoSave) {
-            debug('Starting auto save');
+            //debug('Starting auto save');
             this.startAutoSaving();
         }
         
@@ -190,7 +190,7 @@
              var index = this.layerStack.indexOf(newLayer);
              if (index < 0) {
                // this.addLayerMap(newLayer);
-               debug('FIXME what do we really want to do here?');
+               //debug('FIXME what do we really want to do here?');
              }
              // otherwise we remove all the layers under this one (search the tree?)
              else {
@@ -459,7 +459,7 @@
          },
          
         loadCallback: function(rsp, context) {
-          debug("json-loading:\n===================================\n" + rsp);
+          //debug("json-loading:\n===================================\n" + rsp);
              
           try {
             var obj = null;

@@ -50,7 +50,8 @@ YAHOO.lang.extend(WireIt.LayerMap, WireIt.CanvasElement, {
        * @property options
        */
       this.options = {};
-      this.options.parentEl = Dom.get(options.parentEl || this.layer.el);
+      //this.options.parentEl = Dom.get(options.parentEl || this.layer.el);
+      this.options.parentEl = options.parentEl || this.layer.el;
       this.options.className = options.className || "WireIt-LayerMap";
       this.options.style = options.style || "rgba(0, 0, 200, 0.5)";
       this.options.lineWidth = options.lineWidth || 2;
@@ -65,19 +66,33 @@ YAHOO.lang.extend(WireIt.LayerMap, WireIt.CanvasElement, {
       
       var layer = this.layer;
       
+      $(this.element)
+        .bind('mousedown', this.onMouseDown)
+        .bind('mouseup mouseout', this.onMouseUp)
+        .bind('mousemove', this.onMouseMove);
+      
+      /*
       Event.addListener(this.element, 'mousedown', this.onMouseDown, this, true);
       Event.addListener(this.element, 'mouseup', this.onMouseUp, this, true);
       Event.addListener(this.element, 'mousemove', this.onMouseMove, this, true);
       Event.addListener(this.element, 'mouseout', this.onMouseUp, this, true);
+      */
       
+      $(layer)
+        .bind('eventAddWire eventRemoveWire eventAddContainer eventRemoveContainer eventContainerDragged eventContainer Resized', this.draw);
+      
+      /*
       layer.eventAddWire.subscribe(this.draw, this, true);
       layer.eventRemoveWire.subscribe(this.draw, this, true);
       layer.eventAddContainer.subscribe(this.draw, this, true);
       layer.eventRemoveContainer.subscribe(this.draw, this, true);
       layer.eventContainerDragged.subscribe(this.draw, this, true);
       layer.eventContainerResized.subscribe(this.draw, this, true);
+      */
+      
+      $(this.layer.el).bind('scroll', this.onLayerScroll);
 
-      Event.addListener(this.layer.el, "scroll", this.onLayerScroll, this, true);
+      //Event.addListener(this.layer.el, "scroll", this.onLayerScroll, this, true);
    },
    
    /**
@@ -87,7 +102,9 @@ YAHOO.lang.extend(WireIt.LayerMap, WireIt.CanvasElement, {
     * @param {Array} args event parameters
     */
    onMouseMove: function(e, args) { 
-      Event.stopEvent(e);
+     e.stopPropagation();
+     e.preventDefault();
+      //Event.stopEvent(e);
       if(this.isMouseDown) 
          this.scrollLayer(e.clientX,e.clientY);
    },   
@@ -99,7 +116,9 @@ YAHOO.lang.extend(WireIt.LayerMap, WireIt.CanvasElement, {
     * @param {Array} args event parameters
     */
    onMouseUp: function(e, args) {
-      Event.stopEvent(e);
+     e.stopPropagation();
+     e.preventDefault();
+      //Event.stopEvent(e);
       this.isMouseDown = false;
    },
    
@@ -110,7 +129,9 @@ YAHOO.lang.extend(WireIt.LayerMap, WireIt.CanvasElement, {
     * @param {Array} args event parameters
     */
    onMouseDown: function(e, args) {
-      Event.stopEvent(e);
+     e.stopPropagation();
+     e.preventDefault();
+      //Event.stopEvent(e);
       this.scrollLayer(e.clientX,e.clientY);
       this.isMouseDown = true;
    },
@@ -123,7 +144,8 @@ YAHOO.lang.extend(WireIt.LayerMap, WireIt.CanvasElement, {
     */
    scrollLayer: function(clientX, clientY) {
       
-      var canvasPos = Dom.getXY(this.element);
+      //var canvasPos = Dom.getXY(this.element);
+      var canvasPos = $(this.element).offset();
       var click = [ clientX-canvasPos[0], clientY-canvasPos[1] ];
       
       // Canvas Region

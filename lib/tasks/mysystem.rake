@@ -3,7 +3,6 @@ require 'sprockets'
 @dist_dir = 'public'
 
 @libs = %w{
-  YUI/YUI-combo.js
   http.js
   excanvas.js
   canvastext.js
@@ -13,7 +12,9 @@ require 'sprockets'
   'lib/' + path
 end
 
-@my_system = %w{ 
+@my_system = %w{
+  js/YUI/YUI-combo.js
+  js/raphael-min.js
   engine/mysystem-engine.js 
   js/ds/RestDS.js  
   js/ds/VleDS.js  
@@ -97,7 +98,7 @@ namespace :combine do
     %x(cp src/*.json #{@dist_dir})
     %x(cp -r src/images #{@dist_dir})
     %x(cp -r src/css/* #{@dist_dir}/css)
-    %x(cp ./lib/YUI/*.css ./#{@dist_dir}/css/YUI)
+    %x(cp src/js/YUI/*.css ./#{@dist_dir}/css/YUI)
   end
 end
 
